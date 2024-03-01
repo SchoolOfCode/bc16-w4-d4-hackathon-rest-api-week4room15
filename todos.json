@@ -1,0 +1,32 @@
+[
+    {
+        "id": "1",
+        "toDo": "Clean the kitchen",
+        "Completed": "true"
+    },
+    {
+        "id": "2",
+        "toDo": "Mop the floor",
+        "Completed": "false"
+    },
+    {
+        "id": "3",
+        "toDo": "Wash up",
+        "Completed": "true"
+    },
+    {
+        "id": "4",
+        "toDo": "Take the bins out",
+        "Completed": "false"
+    },
+    {
+        "id": "5",
+        "toDo": "Do the laundry",
+        "Completed": "true"
+    },
+    {
+        "id": "6",
+        "toDo": "Feed the dog",
+        "Completed": "false"
+    },
+]
