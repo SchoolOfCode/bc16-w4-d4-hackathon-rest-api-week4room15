@@ -1,6 +1,6 @@
 import express from 'express';
 import { v4 as uuidv4 } from "uuid";
-import { getTodoList, addTodo, getTodoById, deleteTodo } from "./models/todos.js";
+import { getTodoList, addTodo, getTodoById, deleteTodo, updateTodo } from "./models/todos.js";
 
 const app = express();
 app.use(express.json());
@@ -66,6 +66,27 @@ app.post("/todos", async function (req, res) {
     res.status(statusCode).json({ success: false, payload : error.message || 'Internal server error' });
   }
 });
+
+// create patch handler for app
+// try catch block for exception handling
+
+app.patch("/todos/:id", async function (req, res) {
+  const id = req.params.id;
+  const { toDo, completed } = req.body;
+  try {
+    const todo = await updateTodo(id, toDo, completed);
+
+    if((!toDo || toDo.trim() === "") && (!completed || completed.trim() === "")){
+      throw new Error('Todo List properties incorrect');
+    }
+    res.status(201).json({ success: true, payload: todo });
+  }
+  catch (error) {
+    //Dynamically return correct error status and message
+    const statusCode = error.statusCode || 500;
+    res.status(statusCode).json({ success: false, payload : error.message || 'Internal server error' });
+  }
+})
 
 // create delete handler for app
 // try catch block for exception handling

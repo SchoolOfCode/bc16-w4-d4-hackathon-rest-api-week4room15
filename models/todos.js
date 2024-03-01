@@ -18,6 +18,22 @@ export async function getTodoById(id) {
     return todo;
 }
 
+export async function updateTodo(id, todo, completed) {
+    const todos = await getTodoList();
+
+    const todoIndex = todos.findIndex((todo) => todo.id === id);
+
+    const updatedFields = {
+        id,
+        toDo: !todo || todo.trim() === "" ? todos[todoIndex].toDo : todo,
+        completed: !completed || completed.trim() === "" ? todos[todoIndex].completed : completed
+    }
+
+    todos[todoIndex] = updatedFields;
+
+    return updatedFields;
+}
+
 // create helper function to delete todo, by id
 export async function deleteTodo(id) {
     const todos = await getTodoList();
