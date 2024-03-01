@@ -1,6 +1,6 @@
 import express from 'express';
 import { v4 as uuidv4 } from "uuid";
-import { getTodoList, addTodo } from "./models/todos.js";
+import { getTodoList, addTodo, getTodoById, deleteTodo } from "./models/todos.js";
 
 const app = express();
 app.use(express.json());
@@ -26,6 +26,24 @@ app.get("/todos", async function (req, res) {
   }
 });
 
+app.get("/todos/:id", async function (req, res) {
+  const id = req.params.id;
+  try {
+    const todo = await getTodoById(id);
+
+    if (!todo) {
+      throw new Error(`Todo with id: ${id} not found`)
+    }
+
+    res.status(200).json({ success: true, payload: todo });
+  }
+  catch (error) {
+    //Dynamically return correct error status and message
+    const statusCode = error.statusCode || 500;
+    res.status(statusCode).json({ success: false, payload : error.message || 'Internal server error' });
+  }
+})
+
 // create post request to endpoint /todos
 // pass second argument as an async function
 app.post("/todos", async function (req, res) {
@@ -49,3 +67,25 @@ app.post("/todos", async function (req, res) {
   }
 });
 
+// create delete handler for app
+// try catch block for exception handling
+app.delete("/todos/:id", async function (req, res) {
+  const id = req.params.id;
+  // assign id to a variable
+  // call data callback function to handle deletion of todo task
+  // error validation if id is non existant
+  try {
+    const deletedTodo = await deleteTodo(id);
+
+    if (!deleteTodo) {
+      throw new Error(`Todo with id: ${id} does not exist`)
+    }
+
+    res.status(200).json({ success: true, payload: deletedTodo })
+  }
+  catch (error) {
+    //Dynamically return correct error status and message
+    const statusCode = error.statusCode || 500;
+    res.status(statusCode).json({ success: false, payload : error.message || 'Internal server error' });
+  }
+})
